@@ -1,0 +1,103 @@
+---
+title: "Apply R"
+author: "Anatoly Dryga"
+date: "2/9/2016"
+output: html_document
+---
+
+# Prelim
+
+What are types:
+
+```{r}
+str("1")
+str(1)
+str(1.0)
+str(1L)
+```
+
+If we have __multiple__ things:
+
+* of the same type(can be stored/accessed efficiently)
+```{r}
+v <- c(1,2,3)
+str(v)
+```
+
+* of different type
+```{r}
+L <- list(1,"2",3L)
+str(L)
+```
+
+# lapply, sapply
+
+Looping: repeating something over and over.
+
+lapply/sapply  - just loops hidden/written differently(this statement can start
+a **flame** war).
+
+Starting with vector and returning the vector:
+
+```{r}
+add100 <- function(x) {x + 100}
+sapply(v, add100)
+```
+
+Or using anonymous function:
+```{r}
+sapply(v, function(x) { x + 100})
+```
+
+which is really similar to:
+```{r}
+for (element in v) print(add100(element))
+```
+
+And now it returns list:
+```{r}
+lapply(v, function(x) { x + 100})
+```
+
+that fails:
+
+```{r, eval=FALSE}
+lapply(L, function(x) { x + 100})
+```
+
+# Hacks
+
+* a dataframe can be used as list of columns:
+
+```{r}
+library(lattice)
+str(barley)
+lapply(barley, function(x) length(unique(x)))
+```
+
+* every operation is a function call(can skip argument)
+
+```{r}
+"+"(2,3)
+A<-matrix(1:9, 3,3)
+B<-matrix(4:15, 4,3)
+C<-matrix(8:10, 3,2)
+MyList<-list(A,B,C)
+MyList
+lapply(MyList, "[", , 2)
+```
+
+* use indexes and variable from the environment:
+
+```{r}
+sapply(2:3, function(x) { sum(A[, x])})
+```
+
+
+
+
+
+
+
+
+
