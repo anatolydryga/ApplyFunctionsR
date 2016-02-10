@@ -2,12 +2,12 @@
 title: "Apply R"
 author: "Anatoly Dryga"
 date: "2/9/2016"
-output: html_document
+output: pdf_document
 ---
 
 # Prelim
 
-What are types:
+What are data types:
 
 ```{r}
 str("1")
@@ -16,15 +16,20 @@ str(1.0)
 str(1L)
 ```
 
+why this is important?.. think about memory required to store value
+
 If we have __multiple__ things:
 
 * of the same type(can be stored/accessed efficiently)
+hidden from us completely in R(errrr)
+
 ```{r}
 v <- c(1,2,3)
 str(v)
 ```
 
-* of different type
+* of different types
+
 ```{r}
 L <- list(1,"2",3L)
 str(L)
@@ -34,8 +39,8 @@ str(L)
 
 Looping: repeating something over and over.
 
-lapply/sapply  - just loops hidden/written differently(this statement can start
-a **flame** war).
+lapply/sapply  - just loops hidden/written differently
+(this statement can start a **flame** war).
 
 Starting with vector and returning the vector:
 
@@ -43,18 +48,19 @@ Starting with vector and returning the vector:
 add100 <- function(x) {x + 100}
 sapply(v, add100)
 ```
+(in words applying function add100 for each element of v)
 
-Or using anonymous function:
+Or using anonymous(if you don't need a name) function:
 ```{r}
 sapply(v, function(x) { x + 100})
 ```
 
-which is really similar to:
+which is really similar to(but we are not returning vector):
 ```{r}
 for (element in v) print(add100(element))
 ```
 
-And now it returns list:
+And now lapply returns list:
 ```{r}
 lapply(v, function(x) { x + 100})
 ```
@@ -64,8 +70,9 @@ that fails:
 ```{r, eval=FALSE}
 lapply(L, function(x) { x + 100})
 ```
+Why? For what data types '+' is defined?
 
-# Hacks
+# (Beautiful) Hacks
 
 * a dataframe can be used as list of columns:
 
@@ -75,7 +82,8 @@ str(barley)
 lapply(barley, function(x) length(unique(x)))
 ```
 
-* every operation is a function call(can skip argument)
+* every operation is a function call
+(and we can skip arguments - what a useful feature for bug intoduction)
 
 ```{r}
 "+"(2,3)
@@ -93,7 +101,17 @@ lapply(MyList, "[", , 2)
 sapply(2:3, function(x) { sum(A[, x])})
 ```
 
+Arguably cleaner version:
 
+```{r}
+sapply(2:3, function(x, m) { sum(m[, x])}, A)
+```
+
+Why cleaner? globals are pure evil(most of the time)
+
+# When to chose lapply vs sapply?
+
+Still to come...
 
 
 
